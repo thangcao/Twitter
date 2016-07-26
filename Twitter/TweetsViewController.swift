@@ -20,7 +20,7 @@ class TweetsViewController: UIViewController{
         // Do any additional setup after loading the view.
         initTableView()
         loadDataFromHomeAPI(limitOfData, maxID: nil)
-        pullToRefresh()
+        initPullToRefesh()
     }
     
     override func didReceiveMemoryWarning() {
@@ -77,27 +77,11 @@ extension TweetsViewController: UpdateTweetViewControllerDelegate{
         // TableView Scroll to the top
         tableView.setContentOffset(CGPointZero, animated:true)
     }
-    func pullToRefresh() {
+    func initPullToRefesh() {
         self.refreshControl = UIRefreshControl()
         self.refreshControl!.attributedTitle = NSAttributedString(string: "Pull to refresh")
         self.refreshControl!.addTarget(self, action: #selector(TweetsViewController.loadDataFromHomeAPI), forControlEvents: UIControlEvents.ValueChanged)
-        self.tableView.addSubview(refreshControl!)
-    }
-    func loadDataFromHomeAPI(count: Int, maxID: NSNumber?){
-        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-        TwitterClient.sharedInstance.homeTimeLine(count, maxId: maxID,success: { (tweets: [Tweet]) in
-            self.tweets = tweets
-            self.tableView.reloadData()
-            self.refreshControl?.endRefreshing()
-            self.isMoreDataLoading = false
-            //Stop the loading indicator
-            MBProgressHUD.hideHUDForView(self.view, animated: true)
-            self.loadingMoreView!.stopAnimating()
-            
-        }) { (error: NSError) in
-            print(error)
-        }
-        
+        self.tableView.insertSubview(refreshControl!, atIndex: 0)
     }
 }
 //Detail View Controller
@@ -146,6 +130,22 @@ extension TweetsViewController{
         var insets = tableView.contentInset;
         insets.bottom += InfiniteScrollActivityView.defaultHeight;
         tableView.contentInset = insets
+    }
+    func loadDataFromHomeAPI(count: Int, maxID: NSNumber?){
+        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        TwitterClient.sharedInstance.homeTimeLine(count, maxId: maxID,success: { (tweets: [Tweet]) in
+            self.tweets = tweets
+            self.tableView.reloadData()
+            self.refreshControl?.endRefreshing()
+            self.isMoreDataLoading = false
+            //Stop the loading indicator
+            MBProgressHUD.hideHUDForView(self.view, animated: true)
+            self.loadingMoreView!.stopAnimating()
+            
+        }) { (error: NSError) in
+            print(error)
+        }
+        
     }
 }
 // Scroll
