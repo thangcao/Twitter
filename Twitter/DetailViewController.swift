@@ -8,7 +8,7 @@
 
 import UIKit
 @objc protocol DetailViewControllerDelegate {
-    optional func detailViewController(detailViewController: DetailViewController, updateTweet selectedTweet: Tweet, indexPath: NSIndexPath?, replyTweet: Tweet?)
+    optional func detailViewController(detailViewController: DetailViewController,  updateTweet: Tweet, indexPath: NSIndexPath?, replyTweet: Tweet?)
 }
 
 class DetailViewController: UIViewController {
@@ -67,8 +67,8 @@ class DetailViewController: UIViewController {
     }
     
     @IBAction func backAction(sender: AnyObject) {
-        if let selectedTweet = detailTweet {
-            self.delegate?.detailViewController?(self, updateTweet: selectedTweet, indexPath: indexPath, replyTweet: nil)
+        if let tweet = detailTweet {
+            self.delegate?.detailViewController?(self, updateTweet: tweet, indexPath: indexPath, replyTweet: nil)
         }
         dismissViewControllerAnimated(true, completion: nil)
     }

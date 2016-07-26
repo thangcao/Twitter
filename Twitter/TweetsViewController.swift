@@ -68,8 +68,8 @@ class TweetsViewController: UIViewController{
 }
 // UpdateView Controller
 extension TweetsViewController: UpdateTweetViewControllerDelegate{
-    func updateTweetViewController(updateViewController: UpdateTweetViewController, updateTweet newTweet: Tweet) {
-        addNewTweet(newTweet)
+    func updateTweetViewController(updateViewController: UpdateTweetViewController, updateTweet: Tweet) {
+        addNewTweet(updateTweet)
     }
     func addNewTweet(newTweet: Tweet) {
         tweets!.insert(newTweet, atIndex: 0)
@@ -102,10 +102,10 @@ extension TweetsViewController: UpdateTweetViewControllerDelegate{
 }
 //Detail View Controller
 extension TweetsViewController: DetailViewControllerDelegate {
-    func detailViewController(detailViewController: DetailViewController, updateTweet selectedTweet: Tweet, indexPath: NSIndexPath?, replyTweet: Tweet?) {
+    func detailViewController(detailViewController: DetailViewController, updateTweet: Tweet, indexPath: NSIndexPath?, replyTweet: Tweet?) {
         // Update Tweet Cell
         let cell = self.tableView.cellForRowAtIndexPath(indexPath!) as! TweetCell
-        cell.updateTweetForReTweetAndFavorite(selectedTweet)
+        cell.updateTweetForReTweetAndFavorite(updateTweet)
         // Add Reply Tweet
         if let replyTweet = replyTweet {
             addNewTweet(replyTweet)

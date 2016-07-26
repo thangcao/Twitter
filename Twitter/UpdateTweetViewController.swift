@@ -9,7 +9,7 @@
 import UIKit
 
 @objc protocol UpdateTweetViewControllerDelegate {
-    optional func updateTweetViewController(updateViewController: UpdateTweetViewController, updateTweet newTweet: Tweet)
+    optional func updateTweetViewController(updateViewController: UpdateTweetViewController, updateTweet: Tweet)
 }
 
 class UpdateTweetViewController: UIViewController{
