@@ -8,9 +8,8 @@
 
 import UIKit
 @objc protocol DetailViewControllerDelegate {
-    optional func detailViewController(detailViewController: DetailViewController,  updateTweet: Tweet, indexPath: NSIndexPath?, replyTweet: Tweet?)
+     func detailViewDelegate(detailViewController: DetailViewController,  updateTweet: Tweet, replyTweet: Tweet?)
 }
-
 class DetailViewController: UIViewController {
     
     @IBOutlet weak var cancelBarButton: UIBarButtonItem!
@@ -51,7 +50,6 @@ class DetailViewController: UIViewController {
     var detailTweet: Tweet?
     var isReplyClick: Bool = false
     var beginMessage: String = ""
-    var indexPath: NSIndexPath?
     weak var delegate: DetailViewControllerDelegate?
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,7 +66,7 @@ class DetailViewController: UIViewController {
     
     @IBAction func backAction(sender: AnyObject) {
         if let tweet = detailTweet {
-            self.delegate?.detailViewController?(self, updateTweet: tweet, indexPath: indexPath, replyTweet: nil)
+            self.delegate?.detailViewDelegate(self, updateTweet: tweet, replyTweet: nil)
         }
         dismissViewControllerAnimated(true, completion: nil)
     }
@@ -167,7 +165,7 @@ class DetailViewController: UIViewController {
         TwitterClient.sharedInstance.replyTweet(messageTextView.text, originalId: (detailTweet?.id)!, success: { (tweet) in
             let newTweet = tweet
             if let newTweet = newTweet {
-                self.delegate?.detailViewController?(self, updateTweet: self.detailTweet!, indexPath: self.indexPath, replyTweet: newTweet)
+                self.delegate?.detailViewDelegate(self, updateTweet: self.detailTweet!,replyTweet: newTweet)
                 self.dismissViewControllerAnimated(true, completion: nil)
             }
         }) { (error) in
@@ -175,6 +173,7 @@ class DetailViewController: UIViewController {
         }
     }
 }
+// Init & Update Views
 extension DetailViewController {
     func loadDataForViews() {
         if detailTweet != nil {

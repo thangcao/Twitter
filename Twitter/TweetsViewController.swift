@@ -15,6 +15,7 @@ class TweetsViewController: UIViewController{
     let limitOfData = 20
     @IBOutlet weak var tableView: UITableView!
     var refreshControl: UIRefreshControl?
+    var indexPathForCell: NSIndexPath?
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -56,7 +57,7 @@ class TweetsViewController: UIViewController{
                     let cell = sender as! UITableViewCell
                     if let indexPath = tableView.indexPathForCell(cell) {
                         detailViewController.delegate = self
-                        detailViewController.indexPath = indexPath
+                        indexPathForCell = indexPath
                         detailViewController.detailTweet = self.tweets![indexPath.row]
                     }
                     
@@ -65,11 +66,8 @@ class TweetsViewController: UIViewController{
         }
     }
 }
-// UpdateView Controller
-extension TweetsViewController: UpdateTweetViewControllerDelegate{
-    func updateTweetViewController(updateViewController: UpdateTweetViewController, updateTweet: Tweet) {
-        addNewTweet(updateTweet)
-    }
+// Init View
+extension TweetsViewController {
     func addNewTweet(newTweet: Tweet) {
         tweets!.insert(newTweet, atIndex: 0)
         tableView.reloadData()
@@ -78,16 +76,22 @@ extension TweetsViewController: UpdateTweetViewControllerDelegate{
     }
     func initPullToRefesh() {
         self.refreshControl = UIRefreshControl()
-        self.refreshControl!.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        self.refreshControl!.attributedTitle = NSAttributedString(string: PULL_TO_REFESH)
         self.refreshControl!.addTarget(self, action: #selector(TweetsViewController.loadDataFromHomeAPI), forControlEvents: UIControlEvents.ValueChanged)
         self.tableView.insertSubview(refreshControl!, atIndex: 0)
     }
 }
-//Detail View Controller
+// UpdateViewDelegate
+extension TweetsViewController: UpdateTweetViewControllerDelegate{
+    func updateTweetViewDelegate(updateViewController: UpdateTweetViewController, updateTweet: Tweet) {
+        addNewTweet(updateTweet)
+    }
+}
+//DetailViewDelegate
 extension TweetsViewController: DetailViewControllerDelegate {
-    func detailViewController(detailViewController: DetailViewController, updateTweet: Tweet, indexPath: NSIndexPath?, replyTweet: Tweet?) {
+    func detailViewDelegate(detailViewController: DetailViewController, updateTweet: Tweet, replyTweet: Tweet?) {
         // Update Tweet Cell
-        let cell = self.tableView.cellForRowAtIndexPath(indexPath!) as! TweetCell
+        let cell = self.tableView.cellForRowAtIndexPath(indexPathForCell!) as! TweetCell
         cell.updateTweetForReTweetAndFavorite(updateTweet)
         // Add Reply Tweet
         if let replyTweet = replyTweet {

@@ -9,9 +9,9 @@
 import UIKit
 import BDBOAuth1Manager
 class TwitterClient: BDBOAuth1SessionManager {
+
     
-    
-    static let sharedInstance = TwitterClient(baseURL: NSURL(string: "https://api.twitter.com"), consumerKey: "AV8jhXPeiWSDyjMmslQ9XgybY", consumerSecret: "0kzjvI7iUrXktQBlXwdkKGWKgTWVawYj9bPx0IqU2jPBtL5QWn")
+    static let sharedInstance = TwitterClient(baseURL: NSURL(string: BASE_URL), consumerKey: CONSUMER_KEY, consumerSecret: COMSUMER_KEY_SECRET)
     var loginSuccess: (() -> ())?
     var loginFailure: ((NSError) -> ())?
     
@@ -26,7 +26,7 @@ class TwitterClient: BDBOAuth1SessionManager {
         if maxId != nil {
             params["max_id"] = maxId!
         }
-        GET("1.1/statuses/home_timeline.json", parameters: params, progress: nil, success: { (task : NSURLSessionDataTask, response: AnyObject?) in
+        GET(URL_HOME_TIME_LINE, parameters: params, progress: nil, success: { (task : NSURLSessionDataTask, response: AnyObject?) in
             let dictionaries = response as! [NSDictionary]
             let tweets = Tweet.tweetsWithArray(dictionaries)
             success(tweets)
@@ -35,7 +35,7 @@ class TwitterClient: BDBOAuth1SessionManager {
         })
     }
     func currentAccount(success: (User) -> (), failure:(NSError) -> ()) {
-        GET("1.1/account/verify_credentials.json", parameters: nil, progress: nil, success: { (task : NSURLSessionDataTask, response: AnyObject?) in
+        GET(URL_VERIFY_CREDENTIALS, parameters: nil, progress: nil, success: { (task : NSURLSessionDataTask, response: AnyObject?) in
             let userDictionary = response as! NSDictionary
             let user = User(dictionary: userDictionary)
             success(user)
@@ -47,8 +47,7 @@ class TwitterClient: BDBOAuth1SessionManager {
         loginSuccess = success
         loginFailure = failure
         TwitterClient.sharedInstance.deauthorize()
-        TwitterClient.sharedInstance.fetchRequestTokenWithPath("oauth/request_token", method: "GET", callbackURL: NSURL(string: "twitterdemo://oauth"), scope: nil, success: { (requestToken: BDBOAuth1Credential!) in
-            print("I got a token")
+        TwitterClient.sharedInstance.fetchRequestTokenWithPath(OAUTH_TOKEN, method: "GET", callbackURL: NSURL(string: URL_APP), scope: nil, success: { (requestToken: BDBOAuth1Credential!) in
             let url = NSURL(string: "https://api.twitter.com/oauth/authorize?oauth_token=\(requestToken.token)")!
             UIApplication.sharedApplication().openURL(url)
             
@@ -83,7 +82,7 @@ class TwitterClient: BDBOAuth1SessionManager {
     func favoriteTweet(id: NSNumber, success: (response: AnyObject?) -> (), failure:(NSError) -> ()) {
         var params = [String : AnyObject]()
         params["id"] = id
-        POST("1.1/favorites/create.json", parameters: params, progress: nil, success: { (task: NSURLSessionDataTask, response: AnyObject?) in
+        POST(URL_CREATE_FAVORITE, parameters: params, progress: nil, success: { (task: NSURLSessionDataTask, response: AnyObject?) in
             success (response: response!)
         }) { (task: NSURLSessionDataTask?, error: NSError) in
             failure(error)
@@ -93,7 +92,7 @@ class TwitterClient: BDBOAuth1SessionManager {
     func unFavoriteTweet(id: NSNumber, success: (response: AnyObject?) -> (), failure:(NSError) -> ()) {
         var params = [String : AnyObject]()
         params["id"] = id
-        POST("1.1/favorites/destroy.json", parameters: params, progress: nil, success: { (task: NSURLSessionDataTask, response: AnyObject?) in
+        POST(URL_UNFAVOTIE, parameters: params, progress: nil, success: { (task: NSURLSessionDataTask, response: AnyObject?) in
             success (response: response!)
         }) { (task: NSURLSessionDataTask?, error: NSError) in
             failure(error)
@@ -136,7 +135,7 @@ class TwitterClient: BDBOAuth1SessionManager {
         
         var params = [String : AnyObject]()
         params["status"] = text
-        POST("1.1/statuses/update.json", parameters: params, progress: nil, success: { (task: NSURLSessionDataTask, response: AnyObject?) in
+        POST(URL_UPDATE_TWEET, parameters: params, progress: nil, success: { (task: NSURLSessionDataTask, response: AnyObject?) in
             let newTweet = Tweet(dictionary: response as! NSDictionary)
             success (response: newTweet)
         }) { (task: NSURLSessionDataTask?, error: NSError) in
@@ -149,7 +148,7 @@ class TwitterClient: BDBOAuth1SessionManager {
         var params = [String : AnyObject]()
         params["status"] = text
         params["in_reply_to_status_id"] = originalId
-        POST("1.1/statuses/update.json", parameters: params, progress: nil, success: { (task: NSURLSessionDataTask, response: AnyObject?) in
+        POST(URL_UPDATE_TWEET, parameters: params, progress: nil, success: { (task: NSURLSessionDataTask, response: AnyObject?) in
             let newTweet = Tweet(dictionary: response as! NSDictionary)
             success (response: newTweet)
         }) { (task: NSURLSessionDataTask?, error: NSError) in

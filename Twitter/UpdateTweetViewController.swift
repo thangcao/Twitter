@@ -9,7 +9,7 @@
 import UIKit
 
 @objc protocol UpdateTweetViewControllerDelegate {
-    optional func updateTweetViewController(updateViewController: UpdateTweetViewController, updateTweet: Tweet)
+    func updateTweetViewDelegate(updateViewController: UpdateTweetViewController, updateTweet: Tweet)
 }
 
 class UpdateTweetViewController: UIViewController{
@@ -36,7 +36,7 @@ class UpdateTweetViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        loadUserForBarButton()
+        initUserForBarButton()
         initKeyBoardAndTextView()
         if isReplyMessage {
             loadDataTweetForReply()
@@ -64,7 +64,7 @@ class UpdateTweetViewController: UIViewController{
         if isReplyMessage {
             TwitterClient.sharedInstance.replyTweet(ReplyTextView.text, originalId: (replyTweet?.id)!, success: { (tweet) in
                 if let newTweet = tweet {
-                    self.delegate?.updateTweetViewController!(self, updateTweet: newTweet)
+                    self.delegate?.updateTweetViewDelegate(self, updateTweet: newTweet)
                     self.dismissViewControllerAnimated(true, completion: nil)
                 }
             }) { (error) in
@@ -74,7 +74,7 @@ class UpdateTweetViewController: UIViewController{
             let text = ReplyTextView.text.stringByReplacingOccurrencesOfString("\n", withString: "\n\r")
             TwitterClient.sharedInstance.updateTweet(text, success: { (tweet) in
                 if let newTweet = tweet {
-                    self.delegate?.updateTweetViewController!(self, updateTweet: newTweet)
+                    self.delegate?.updateTweetViewDelegate(self, updateTweet: newTweet)
                     self.dismissViewControllerAnimated(true, completion: nil)
                 }
                 }, failure: { (error) in
@@ -110,7 +110,7 @@ extension UpdateTweetViewController {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(UpdateTweetViewController.keyboardWasHiden(_:)), name:UIKeyboardWillHideNotification, object: nil)
 
     }
-    func loadUserForBarButton(){
+    func initUserForBarButton(){
 //        let avatar = UIImageView(frame: CGRect(x: 0, y: 0, width: 22, height: 22))
 //        let imageRequest = NSURLRequest(URL: (User.currentUser?.profileUrl)!)
 //        avatar.setImageWithURLRequest(
