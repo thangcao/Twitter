@@ -17,6 +17,7 @@ struct FortmartDateUtil {
         var result: String = ""
         let elapsedTime = NSDate().timeIntervalSinceDate(timestamp)
         let duration = Int(elapsedTime)
+        
         if duration < minutes {
             result = "\(duration)s"
         } else if duration >= minutes && duration < hour {
@@ -37,7 +38,6 @@ struct FortmartDateUtil {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateStyle = NSDateFormatterStyle.ShortStyle
         dateFormatter.timeStyle = .ShortStyle
-        let dateString = dateFormatter.stringFromDate(timestamp)
-        return dateString
+        return  dateFormatter.stringFromDate(timestamp)
     }
 }
