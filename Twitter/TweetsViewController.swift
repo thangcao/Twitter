@@ -34,7 +34,6 @@ class TweetsViewController: UIViewController{
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
         let navigationController = segue.destinationViewController as! UINavigationController
         if navigationController.topViewController is UpdateTweetViewController {
             let updateViewController = navigationController.topViewController as! UpdateTweetViewController
