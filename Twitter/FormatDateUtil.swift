@@ -9,13 +9,14 @@
 import Foundation
 struct FortmartDateUtil {
     static func formatDateToShortDate(timestamp: NSDate) -> String {
-        
+        print (timestamp)
         let minutes = 60
         let hour = minutes * 60
         let day = hour * 24
         let week = day * 7
         var result: String = ""
         let elapsedTime = NSDate().timeIntervalSinceDate(timestamp)
+        print(elapsedTime)
         let duration = Int(elapsedTime)
         
         if duration < minutes {
@@ -28,9 +29,11 @@ struct FortmartDateUtil {
             result =  "\( duration / day)d"
         } else {
             let dateFormatter = NSDateFormatter()
-            dateFormatter.dateFormat = "M/d/yy"
+            
+            dateFormatter.dateFormat = "MMM dd YYY HH:mm"
             result = dateFormatter.stringFromDate(timestamp)
         }
+        
         return result
     }
     
@@ -38,6 +41,9 @@ struct FortmartDateUtil {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateStyle = NSDateFormatterStyle.ShortStyle
         dateFormatter.timeStyle = .ShortStyle
+        dateFormatter.dateFormat = "h:mm a '-' MMMM dd, yyyy"
+        dateFormatter.AMSymbol = "AM"
+        dateFormatter.PMSymbol = "PM"
         return  dateFormatter.stringFromDate(timestamp)
     }
 }
