@@ -28,7 +28,7 @@ class TweetsViewController: BaseViewMenuController{
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-        
+    
     @IBAction func onMenuAction(sender: UIBarButtonItem) {
         menuDelegate?.callSlideMenuDelegate(true)
     }
@@ -60,7 +60,17 @@ class TweetsViewController: BaseViewMenuController{
                         indexPathForCell = indexPath
                         detailViewController.detailTweet = self.tweets![indexPath.row]
                     }
-                    
+                }
+            } else {
+                if navigationController.topViewController is ProfileUserViewController {
+                    if segue.identifier == "profileSegue" {
+                        let profileViewController = navigationController.topViewController as! ProfileUserViewController
+                        if let chosenTweetCell = sender!.superview!!.superview as? TweetCell {
+                            let chosenTweet = chosenTweetCell.tweet
+                            print("Choose User \(chosenTweet?.user)")
+                            profileViewController.user = chosenTweet?.user
+                        }
+                    }
                 }
             }
         }
@@ -78,6 +88,7 @@ extension TweetsViewController {
         self.refreshControl = UIRefreshControl()
         self.refreshControl!.attributedTitle = NSAttributedString(string: PULL_TO_REFESH)
         self.refreshControl!.addTarget(self, action: #selector(TweetsViewController.loadDataFromHomeAPI), forControlEvents: UIControlEvents.ValueChanged)
+        //        self.tableView.addSubview(refreshControl!)
         self.tableView.insertSubview(refreshControl!, atIndex: 0)
     }
 }

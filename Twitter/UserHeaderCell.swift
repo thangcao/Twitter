@@ -35,7 +35,7 @@ class UserHeaderCell: UITableViewCell {
             followerCountLabel.text =  "\((user?.followerCount)!)"
             profileImageView.borderView(1, color: UIColor.whiteColor().CGColor)
             profileImageView.setImageWithURL((user?.profileUrl!)!)
-          
+//            profileImageView.transform =  CGAffineTransformScale(profileImageView.transform, 1.25, 1.25)
 
         }
     }
