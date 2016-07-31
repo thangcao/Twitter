@@ -35,6 +35,8 @@ class TweetCell: UITableViewCell {
     
     @IBOutlet weak var viewReply: UIView!
     
+    var viewController: UIViewController?
+    
     var countOfFavorite: Int = 0
     var tweet : Tweet? {
         didSet {
@@ -84,6 +86,7 @@ class TweetCell: UITableViewCell {
         // Initialization code
         initActionForViewFavorite()
         initActionForViewReTweet()
+        initActionForProfileImageView()
     }
     
     override func setSelected(selected: Bool, animated: Bool) {
@@ -162,7 +165,12 @@ extension TweetCell {
             self.updateReTweetView((self.tweet?.isRetweeted)!)
         }
     }
-    
+    func userImageViewAction(sender: AnyObject){
+        let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = mainStoryboard.instantiateViewControllerWithIdentifier("ProfileUserViewController")
+        self.viewController?.presentViewController(vc, animated: true, completion: nil)
+        //self.viewController(vc, animated: true, completion: nil)
+    }
 }
 // Init Actions for View
 extension TweetCell {
@@ -173,6 +181,10 @@ extension TweetCell {
     func initActionForViewReTweet(){
         let gesture = UITapGestureRecognizer(target: self, action: #selector(TweetCell.viewReTweetAction(_:)))
         viewReTweet.addGestureRecognizer(gesture)
+    }
+    func initActionForProfileImageView() {
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(TweetCell.userImageViewAction(_:)))
+        userImageView.addGestureRecognizer(gesture)
     }
     func updateTweetForReTweetAndFavorite(tweet: Tweet){
         self.tweet = tweet

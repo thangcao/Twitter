@@ -14,6 +14,7 @@ struct FortmartDateUtil {
         let hour = minutes * 60
         let day = hour * 24
         let week = day * 7
+        
         var result: String = ""
         let elapsedTime = NSDate().timeIntervalSinceDate(timestamp)
         print(elapsedTime)
@@ -29,7 +30,6 @@ struct FortmartDateUtil {
             result =  "\( duration / day)d"
         } else {
             let dateFormatter = NSDateFormatter()
-            
             dateFormatter.dateFormat = "MMM dd YYY HH:mm"
             result = dateFormatter.stringFromDate(timestamp)
         }

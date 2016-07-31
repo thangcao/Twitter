@@ -8,7 +8,7 @@
 
 import UIKit
 import MBProgressHUD
-class TweetsViewController: UIViewController{
+class TweetsViewController: BaseViewMenuController{
     var tweets: [Tweet]?
     var isMoreDataLoading = false
     var loadingMoreView:InfiniteScrollActivityView?
@@ -28,9 +28,9 @@ class TweetsViewController: UIViewController{
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    @IBAction func onLogout(sender: AnyObject) {
-        TwitterClient.sharedInstance.logout()
+        
+    @IBAction func onMenuAction(sender: UIBarButtonItem) {
+        menuDelegate?.callSlideMenuDelegate(true)
     }
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -93,6 +93,7 @@ extension TweetsViewController: DetailViewControllerDelegate {
         // Update Tweet Cell
         let cell = self.tableView.cellForRowAtIndexPath(indexPathForCell!) as! TweetCell
         cell.updateTweetForReTweetAndFavorite(updateTweet)
+        cell.viewController = self
         // Add Reply Tweet
         if let replyTweet = replyTweet {
             addNewTweet(replyTweet)

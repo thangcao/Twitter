@@ -14,7 +14,7 @@ class TwitterClient: BDBOAuth1SessionManager {
     static let sharedInstance = TwitterClient(baseURL: NSURL(string: BASE_URL), consumerKey: CONSUMER_KEY, consumerSecret: COMSUMER_KEY_SECRET)
     var loginSuccess: (() -> ())?
     var loginFailure: ((NSError) -> ())?
-    
+    // Home Timeline
     func homeTimeLine ( count: Int?, maxId: NSNumber?,success: ([Tweet]) -> (), failure: (NSError) -> ()) {
         
         var params = [String : AnyObject]()
@@ -34,9 +34,25 @@ class TwitterClient: BDBOAuth1SessionManager {
                 failure(error)
         })
     }
+    // User TimeLIne
+    func userTimeLine( user: User, success: ([Tweet]) -> (), failure: (NSError) -> ()) {
+        var params = [String: AnyObject]()
+        params["user_id"] = user.id!
+        params["screen_name"] = user.screenName
+        GET(URL_USER_TIME_LINE, parameters: params, progress: nil, success: { (task:NSURLSessionDataTask, response: AnyObject?) in
+            let dictionaries = response as! [NSDictionary]
+            let tweets = Tweet.tweetsWithArray(dictionaries)
+            success(tweets)
+        }) { (task: NSURLSessionDataTask?, error: NSError) in
+                failure(error)
+        }
+        
+        
+    }
     func currentAccount(success: (User) -> (), failure:(NSError) -> ()) {
         GET(URL_VERIFY_CREDENTIALS, parameters: nil, progress: nil, success: { (task : NSURLSessionDataTask, response: AnyObject?) in
             let userDictionary = response as! NSDictionary
+           // print("User Dictionary : \(userDictionary)")
             let user = User(dictionary: userDictionary)
             success(user)
             }, failure: { (task: NSURLSessionDataTask?, error: NSError) in

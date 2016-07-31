@@ -26,5 +26,9 @@ class CircleImageView: UIImageView {
             self.frame.size.width / 2
         self.clipsToBounds = true
     }
-
+    func borderView(radius: CGFloat, color: CGColor){
+        self.clipsToBounds = true
+        self.layer.borderColor = color
+        self.layer.borderWidth = radius
+    }
 }

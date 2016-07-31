@@ -16,24 +16,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        
+        
+        
         UINavigationBar.appearance().barTintColor = UIColor(red: 82/255, green: 173/255, blue: 243/255, alpha: 1.0)
         UINavigationBar.appearance().tintColor = UIColor.whiteColor()
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
         
         UIApplication.sharedApplication().statusBarStyle = .LightContent
         
+        
         //
         if User.currentUser != nil {
             print("There is a current user")
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let viewController = storyboard.instantiateViewControllerWithIdentifier("TweetsNavigationController")
+            let viewController = storyboard.instantiateViewControllerWithIdentifier("HamburgerViewController")
             window?.rootViewController = viewController
+            
         }
         NSNotificationCenter.defaultCenter().addObserverForName(User.userDigLogoutNotification, object: nil, queue: NSOperationQueue.mainQueue()) { (NSNotification)  in
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let viewController = storyboard.instantiateInitialViewController()
             self.window?.rootViewController = viewController
         }
+        
+//        let hamburgerViewController = window?.rootViewController as! HamburgerViewController
+//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//        let menuViewController = storyboard.instantiateViewControllerWithIdentifier("MenuViewController") as! MenuViewController
+//        menuViewController.hamburgerViewController = hamburgerViewController
+//        hamburgerViewController.menuviewController = menuViewController
+//        
+//        menuViewController.hamburgerViewController = hamburgerViewController
         return true
     }
     
