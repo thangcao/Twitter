@@ -57,6 +57,10 @@ class HamburgerViewController: UIViewController, BaseViewMenuControllerDelegate 
         super.viewDidLoad()
         //Do any additional setup after loading the view.
         
+        
+    }
+    override func viewWillLayoutSubviews() {
+       
     }
     override func viewDidAppear(animated: Bool) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -64,7 +68,6 @@ class HamburgerViewController: UIViewController, BaseViewMenuControllerDelegate 
         menuViewController.hamburgerViewController = self
         self.menuviewController = menuViewController
         
-        menuViewController.hamburgerViewController = self
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

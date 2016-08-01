@@ -21,18 +21,20 @@ class MenuViewController: UIViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.separatorStyle = UITableViewCellSeparatorStyle.None
+        
         let storyBoard = UIStoryboard(name: "Main", bundle:  nil)
         profileUserViewController = storyBoard.instantiateViewControllerWithIdentifier("ProfileUserViewController")
         tweetsViewController = storyBoard.instantiateViewControllerWithIdentifier("TweetsViewController")
         viewControllers.append(tweetsViewController)
         viewControllers.append(profileUserViewController)
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.separatorStyle = UITableViewCellSeparatorStyle.None
     }
-    
-    override func viewDidAppear(animated: Bool) {
+    override func viewWillLayoutSubviews() {
         hamburgerViewController.contentViewController = viewControllers[0]
+    }
+    override func viewDidAppear(animated: Bool) {
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -59,7 +61,7 @@ extension MenuViewController : UITableViewDelegate, UITableViewDataSource {
         switch  indexPath.section {
         case 0:
             let cell  = tableView.dequeueReusableCellWithIdentifier("UserHeaderCell") as! UserHeaderCell
-            cell.user = User._currentUser
+            cell.user = User.currentUser
             cell.constrainsRightOfViewHeader.constant = 50
             return cell
         case 1:
@@ -68,7 +70,7 @@ extension MenuViewController : UITableViewDelegate, UITableViewDataSource {
             if cell.titleLabel.text == "Home" {
                 cell.imageTitle.image = UIImage(named: "home-icon")
             } else {
-                 cell.imageTitle.image = UIImage(named: "user-icon")
+                cell.imageTitle.image = UIImage(named: "user-icon")
             }
             return cell
         default:

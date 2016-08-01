@@ -9,8 +9,8 @@
 import UIKit
 
 class UserHeaderCell: UITableViewCell {
-
-    @IBOutlet weak var buttonFromHeaderView: UIButton!
+    
+    
     
     @IBOutlet weak var constrainsRightOfViewHeader: NSLayoutConstraint!
     
@@ -28,36 +28,32 @@ class UserHeaderCell: UITableViewCell {
     
     var user: User? {
         didSet {
-            userNameLabel.text = (user?.name)!
-            idNameLabel.text = "@\((user?.screenName)!)"
-            tweetCountLabel.text = "\((user?.retweetCount)!)"
-            followingCountLabel.text = "\((user?.followingCount)!)"
-            followerCountLabel.text =  "\((user?.followerCount)!)"
-            profileImageView.borderView(1, color: UIColor.whiteColor().CGColor)
-            profileImageView.setImageWithURL((user?.profileUrl!)!)
-//            profileImageView.transform =  CGAffineTransformScale(profileImageView.transform, 1.25, 1.25)
-
+            print((self.user?.name)!)
+            self.self.userNameLabel.text = (self.user?.name)!
+            self.idNameLabel.text = "@\((self.user?.screenName)!)"
+            self.tweetCountLabel.text = "\((self.user?.retweetCount)!)"
+            self.followingCountLabel.text = "\((self.user?.followingCount)!)"
+            self.followerCountLabel.text =  "\((self.user?.followerCount)!)"
+            self.profileImageView.borderView(1, color: UIColor.whiteColor().CGColor)
+            self.profileImageView.setImageWithURL((self.user?.profileUrl!)!)
+            
+            //            profileImageView.transform =  CGAffineTransformScale(profileImageView.transform, 1.25, 1.25)
+            
         }
     }
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        if buttonFromHeaderView != nil {
-            buttonFromHeaderView.clipsToBounds = true
-            buttonFromHeaderView.layer.borderColor = UIColor.cyanColor()
-                .CGColor
-            buttonFromHeaderView.layer.borderWidth = 1
-        }
-      
+        
     }
-
+    
     @IBAction func onButtonHeaderViewAction(sender: UIButton) {
-         TwitterClient.sharedInstance.logout()
+        TwitterClient.sharedInstance.logout()
     }
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
         // Configure the view for the selected state
     }
-
+    
 }

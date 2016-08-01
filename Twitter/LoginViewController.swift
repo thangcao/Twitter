@@ -17,7 +17,7 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view. 0, 172, 237 |  29, 202, 255
-    
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -28,7 +28,11 @@ class LoginViewController: UIViewController {
     @IBAction func loginAction(sender: AnyObject) {
         TwitterClient.sharedInstance.login({
             print("I've loged in")
-            self.performSegueWithIdentifier("loginSegue", sender: nil)
+            let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+            
+            let resultViewController = storyBoard.instantiateViewControllerWithIdentifier("HamburgerViewController") as! HamburgerViewController
+            
+            self.presentViewController(resultViewController, animated:true, completion:nil)
         }) { (error: NSError) in
             print("ErrorL \(error.localizedDescription)")
         }

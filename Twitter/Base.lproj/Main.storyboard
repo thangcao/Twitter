@@ -93,7 +93,6 @@
                                         </state>
                                         <connections>
                                             <action selector="loginAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="uTd-hL-PhD"/>
-                                            <segue destination="gqE-kp-JLq" kind="presentation" identifier="loginSegue" id="xeq-NO-e7c"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -620,7 +619,7 @@
                     </connections>
                 </panGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1106.5" y="-424.5"/>
+            <point key="canvasLocation" x="1056.5" y="-466.5"/>
         </scene>
         <!--Menu View Controller-->
         <scene sceneID="RtL-13-rC0">
