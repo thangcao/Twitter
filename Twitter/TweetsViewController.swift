@@ -51,27 +51,25 @@ class TweetsViewController: BaseViewMenuController{
                 }
             }
         } else {
-            if navigationController.topViewController is DetailViewController {
-                if segue.identifier == "cellSegue" {
-                    let detailViewController = navigationController.topViewController as! DetailViewController
-                    let cell = sender as! UITableViewCell
-                    if let indexPath = tableView.indexPathForCell(cell) {
-                        detailViewController.delegate = self
-                        indexPathForCell = indexPath
-                        detailViewController.detailTweet = self.tweets![indexPath.row]
+            if segue.identifier == "cellSegue" {
+                let detailViewController = navigationController.topViewController as! DetailViewController
+                let cell = sender as! UITableViewCell
+                if let indexPath = tableView.indexPathForCell(cell) {
+                    detailViewController.delegate = self
+                    indexPathForCell = indexPath
+                    detailViewController.detailTweet = self.tweets![indexPath.row]
+                }
+            }
+            else {
+                if segue.identifier == "profileSegue" {
+                    let profileViewController = navigationController.topViewController as! ProfileUserViewController
+                    if let chosenTweetCell = sender!.superview!!.superview as? TweetCell {
+                        let chosenTweet = chosenTweetCell.tweet
+                        print("Choose User \(chosenTweet?.user)")
+                        profileViewController.user = chosenTweet?.user
                     }
                 }
-            } else {
-                if navigationController.topViewController is ProfileUserViewController {
-                    if segue.identifier == "profileSegue" {
-                        let profileViewController = navigationController.topViewController as! ProfileUserViewController
-                        if let chosenTweetCell = sender!.superview!!.superview as? TweetCell {
-                            let chosenTweet = chosenTweetCell.tweet
-                            print("Choose User \(chosenTweet?.user)")
-                            profileViewController.user = chosenTweet?.user
-                        }
-                    }
-                }
+                
             }
         }
     }

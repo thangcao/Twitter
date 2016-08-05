@@ -8,7 +8,7 @@
 
 import UIKit
 @objc protocol DetailViewControllerDelegate {
-     func detailViewDelegate(detailViewController: DetailViewController,  updateTweet: Tweet, replyTweet: Tweet?)
+    func detailViewDelegate(detailViewController: DetailViewController,  updateTweet: Tweet, replyTweet: Tweet?)
 }
 class DetailViewController: UIViewController {
     
@@ -94,9 +94,7 @@ class DetailViewController: UIViewController {
                     
             })
             self.detailTweet?.favoriteCount -= 1
-            self.favoriteCountLabel.text =  "\((self.detailTweet?.favoriteCount)!)"
             self.detailTweet?.isFavorited = false
-            self.updateFavoriteView((self.detailTweet?.isFavorited)!)
         } else {
             TwitterClient.sharedInstance.favoriteTweet((detailTweet?.id)!, success: { (response) in
                 if response != nil {
@@ -107,10 +105,12 @@ class DetailViewController: UIViewController {
                     
             })
             self.detailTweet?.favoriteCount += 1
-            self.favoriteCountLabel.text =  "\((self.detailTweet?.favoriteCount)!)"
             self.detailTweet?.isFavorited = true
-            self.updateFavoriteView((self.detailTweet?.isFavorited)!)
+            
         }
+        self.updateFavoriteView((self.detailTweet?.isFavorited)!)
+        self.favoriteCountLabel.text =  "\((self.detailTweet?.favoriteCount)!)"
+        
     }
     
     @IBAction func retweetAction(sender: AnyObject) {
@@ -129,9 +129,8 @@ class DetailViewController: UIViewController {
                     print(error)
             })
             self.detailTweet?.retweetCount -= 1
-            self.retweetCountLabel.text =  "\((self.detailTweet?.retweetCount)!)"
             self.detailTweet?.isRetweeted = false
-            self.updateReTweetView((self.detailTweet?.isRetweeted)!)
+            
         } else {
             TwitterClient.sharedInstance.reTweet((detailTweet?.id)!, success: { (response) in
                 if response != nil {
@@ -142,11 +141,10 @@ class DetailViewController: UIViewController {
                     
             })
             self.detailTweet?.retweetCount += 1
-            self.retweetCountLabel.text =  "\((self.detailTweet?.retweetCount)!)"
             self.detailTweet?.isRetweeted = true
-            self.updateReTweetView((self.detailTweet?.isRetweeted)!)
         }
-        
+        self.updateReTweetView((self.detailTweet?.isRetweeted)!)
+        self.retweetCountLabel.text =  "\((self.detailTweet?.retweetCount)!)"
     }
     
     @IBAction func replyAction(sender: AnyObject) {

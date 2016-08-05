@@ -99,7 +99,7 @@ class HamburgerViewController: UIViewController, BaseViewMenuControllerDelegate 
             
         }
     }
-    
+    // MARK : SlideMenu Delegate
     func callSlideMenuDelegate(isCall: Bool) {
         if isCall{
             if isOpenSlideMenu {
